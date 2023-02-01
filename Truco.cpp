@@ -5,6 +5,12 @@
 #include <cstdlib>
 using namespace std;
 
+class Cartas{
+    public:
+    int valor;
+    string carta;
+};
+
 class Jogador{
     public:
     Cartas cards[3];
@@ -13,12 +19,6 @@ class Jogador{
 class Computador{
     public:
     Cartas cards[3];
-};
-
-class Cartas{
-    public:
-    int valor;
-    string carta;
 };
 
 class Monte{
@@ -32,10 +32,8 @@ class Monte{
     "5P","5C","5E","5O","4P","4C","4E","4O"};
     void maço();
     int a = 1;
-    void transfere(Jogador destino, int a); int a = 4;
-    void transfere(Computador destino, int a); int a = 7;
-    void transfere(Computador destino, int a); int a = 10;
-    void transfere(Computador destino, int a); int a = 13;
+    void transfere(Jogador destino, int a);
+    void transfere(Computador destino, int a);
 };
 
 void Monte::maço(){
@@ -60,7 +58,20 @@ void Monte::transfere(Jogador destino, int a){
     }
 }
 
-int main(){
+class Jogo{
+    public:
+};
+
+void jogo(){
     srand(time(0));
+    Jogador A1;Computador A2;
+    Computador B1;Computador B2;
+    Monte monte;monte.maço();
+    monte.transfere(A1,1);monte.transfere(A2,4);
+    monte.transfere(A2,7);monte.transfere(A2,10);
+}
+
+int main(){
+    jogo();
     return 0;
 }
