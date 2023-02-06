@@ -30,10 +30,18 @@ class Monte{
     "JP","JC","JE","JO","QP","QC","QE","QO",
     "7P","7C","7E","7O","6P","6C","6E","6O",
     "5P","5C","5E","5O","4P","4C","4E","4O"};
+    Cartas ordemjogo[12];
     void maço();
     int a = 1;
     void transfere(Jogador destino, int a);
     void transfere(Computador destino, int a);
+    void ordem();
+    void monta(Jogador A1, Computador A2, Computador B1, Computador B2);
+};
+
+class Rodada{
+    Monte monte;
+    monte; 
 };
 
 void Monte::maço(){
@@ -52,26 +60,22 @@ void Monte::transfere(Jogador destino, int a){
     for(int i = 0;i<3;i++){
         int r = i + (rand() % 40-i-a);
         destino.cards[i] = cards[r];
+        ordemjogo[i] = cards[r];
         for (int i = i; i < 40-i-a; ++i){
             cards[i] = cards[i + 1];
         }
     }
 }
 
-class Jogo{
-    public:
-};
-
-void jogo(){
-    srand(time(0));
-    Jogador A1;Computador A2;
-    Computador B1;Computador B2;
-    Monte monte;monte.maço();
-    monte.transfere(A1,1);monte.transfere(A2,4);
-    monte.transfere(A2,7);monte.transfere(A2,10);
+void Monte::monta(Jogador A1, Computador A2, Computador B1, Computador B2){
+    maço();
+    transfere(A1, 1);
+    transfere(A2, 4);
+    transfere(B1, 7);
+    transfere(B2, 10);
 }
 
+
 int main(){
-    jogo();
     return 0;
 }
