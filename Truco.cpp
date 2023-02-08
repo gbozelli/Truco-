@@ -14,11 +14,17 @@ class Cartas{
 class Jogador{
     public:
     Cartas cards[3];
+    int pontuação = 0;
+    int numero_cartas = 3;
+    void joga();
 };
 
 class Computador{
     public:
     Cartas cards[3];
+    int pontuação = 0;
+    int numero_cartas = 3;
+    void joga();
 };
 
 class Monte{
@@ -35,13 +41,13 @@ class Monte{
     int a = 1;
     void transfere(Jogador destino, int a);
     void transfere(Computador destino, int a);
-    void ordem();
     void monta(Jogador A1, Computador A2, Computador B1, Computador B2);
+    void Mesa();
 };
 
-class Rodada{
-    Monte monte;
-    monte; 
+class Mesa{
+    public:
+    Cartas cards[12];
 };
 
 void Monte::maço(){
@@ -53,8 +59,7 @@ void Monte::maço(){
         cards[i] = cards[i + 1];}
     for(int i=r;i<r+3;i++){
         cards[i].valor = cards[i].valor + 41;
-    }
-}
+}}
 
 void Monte::transfere(Jogador destino, int a){
     for(int i = 0;i<3;i++){
@@ -63,9 +68,16 @@ void Monte::transfere(Jogador destino, int a){
         ordemjogo[i] = cards[r];
         for (int i = i; i < 40-i-a; ++i){
             cards[i] = cards[i + 1];
-        }
-    }
-}
+}}}
+
+void Monte::transfere(Computador destino, int a){
+    for(int i = 0;i<3;i++){
+        int r = i + (rand() % 40-i-a);
+        destino.cards[i] = cards[r];
+        ordemjogo[i] = cards[r];
+        for (int i = i; i < 40-i-a; ++i){
+            cards[i] = cards[i + 1];
+}}}
 
 void Monte::monta(Jogador A1, Computador A2, Computador B1, Computador B2){
     maço();
@@ -75,7 +87,28 @@ void Monte::monta(Jogador A1, Computador A2, Computador B1, Computador B2){
     transfere(B2, 10);
 }
 
+void Jogador::joga(){
+    for(int i=0;i<numero_cartas;i++){
+    cout<<i<<" - " << cards[i].carta<<" ";}
+    cout<<"Qual deseja jogar?";
+    int a; cin>> a;
+    cout<<"Você jogou "<<cards[a].carta;
+    }
+
+void Computador::joga(){
+    if(numero_cartas==3){
+        
+    }
+}
+
+
 
 int main(){
+    Jogador A1;
+    Computador A2;
+    Computador B1;
+    Computador B2;
+    Monte monte;
+    monte.monta(A1,A2,B1,B2);
     return 0;
 }
