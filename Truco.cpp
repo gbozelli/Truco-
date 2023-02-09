@@ -3,6 +3,7 @@
 #include <string>
 #include <ctime>
 #include <cstdlib>
+#include <vector>
 using namespace std;
 
 class Cartas{
@@ -11,25 +12,39 @@ class Cartas{
     string carta;
 };
 
-class Jogador{
+class Card_Owner{
     public:
-    Cartas cards[3];
-    int pontuação = 0;
-    int numero_cartas = 3;
-    void joga();
+    int k = 10;
+    Cartas* cards = new Cartas[k];
+    void card_transfer(int quantity, Card_Owner destin);
 };
 
-class Computador{
+class Base_Player: public Card_Owner{
     public:
-    Cartas cards[3];
-    int pontuação = 0;
-    int numero_cartas = 3;
-    void joga();
+    Base_Player(){
+        k = 3;
+    }
+    int pontuation = 0;
+    int number_of_cards = 3;
+    public:
+    void play();
 };
 
-class Monte{
+class Human_Player : public Base_Player{
     public:
-    Cartas cards[40];
+    void play();
+};
+
+class Robot_Player : public Base_Player{
+    public:
+    void play();
+};
+
+class Monte : public Card_Owner{
+    public:
+    Monte(){
+        k = 40;
+    }
     string cartas[40] = {
     "3P","3C","3E","3O","2P","2C","2E","2O",
     "1P","1C","1E","1O","KP","KC","KE","KO",
@@ -39,15 +54,17 @@ class Monte{
     Cartas ordemjogo[12];
     void maço();
     int a = 1;
-    void transfere(Jogador destino, int a);
-    void transfere(Computador destino, int a);
-    void monta(Jogador A1, Computador A2, Computador B1, Computador B2);
+    void card_transfer(Human_Player destino, int a);
+    void card_transfer(Robot_Player destino, int a);
+    void monta(Human_Player A1, Robot_Player A2, Robot_Player B1, Robot_Player B2);
     void Mesa();
 };
 
-class Mesa{
+class Mesa : public Card_Owner{
     public:
-    Cartas cards[12];
+    Mesa(){
+        k = 12;
+    }
 };
 
 void Monte::maço(){
@@ -61,53 +78,51 @@ void Monte::maço(){
         cards[i].valor = cards[i].valor + 41;
 }}
 
-void Monte::transfere(Jogador destino, int a){
+void Card_Owner::card_transfer(int quantity, Card_Owner destino){
     for(int i = 0;i<3;i++){
-        int r = i + (rand() % 40-i-a);
+        int r = i + (rand() % 40-i);
         destino.cards[i] = cards[r];
-        ordemjogo[i] = cards[r];
-        for (int i = i; i < 40-i-a; ++i){
+        for (int i = i; i < 40-i; ++i){
             cards[i] = cards[i + 1];
 }}}
 
-void Monte::transfere(Computador destino, int a){
-    for(int i = 0;i<3;i++){
-        int r = i + (rand() % 40-i-a);
-        destino.cards[i] = cards[r];
-        ordemjogo[i] = cards[r];
-        for (int i = i; i < 40-i-a; ++i){
-            cards[i] = cards[i + 1];
-}}}
-
-void Monte::monta(Jogador A1, Computador A2, Computador B1, Computador B2){
+void Monte::monta(Human_Player A1, Robot_Player A2, Robot_Player B1, Robot_Player B2){
     maço();
-    transfere(A1, 1);
-    transfere(A2, 4);
-    transfere(B1, 7);
-    transfere(B2, 10);
+    card_transfer(A1, 1);
+    card_transfer(A2, 4);
+    card_transfer(B1, 7);
+    card_transfer(B2, 10);
 }
 
-void Jogador::joga(){
-    for(int i=0;i<numero_cartas;i++){
+void Human_Player::play(){
+    for(int i=0;i<number_of_cards;i++){
     cout<<i<<" - " << cards[i].carta<<" ";}
     cout<<"Qual deseja jogar?";
     int a; cin>> a;
     cout<<"Você jogou "<<cards[a].carta;
-    }
-
-void Computador::joga(){
-    if(numero_cartas==3){
-        
-    }
+    for (int i = 0; i <number_of_cards; ++i){
+        cards[i] = cards[i + 1];}
+    number_of_cards--;
 }
 
-
+void Robot_Player::play(){
+    int i = 0;
+    if(number_of_cards==3){
+        i = i + (rand() % 2);
+        cout <<"O Robot_Player jogou "<<cards[i].carta;}
+    if(number_of_cards==2){
+        i = 0;
+        cout <<"O Robot_Player jogou "<<cards[i].carta;}
+    for (int i = 0; i <number_of_cards; ++i){
+        cards[i] = cards[i + 1];}
+    number_of_cards--;
+}
 
 int main(){
-    Jogador A1;
-    Computador A2;
-    Computador B1;
-    Computador B2;
+    Human_Player A1;
+    Robot_Player A2;
+    Robot_Player B1;
+    Robot_Player B2;
     Monte monte;
     monte.monta(A1,A2,B1,B2);
     return 0;
