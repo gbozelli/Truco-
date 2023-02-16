@@ -1,4 +1,6 @@
-public class inter{
+package src;
+
+public class evaluate{
     public static double eval(final String str) {
         return new Object() {
             int pos = -1, ch;

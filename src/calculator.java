@@ -1,22 +1,18 @@
-
+package src;
 import java.util.Scanner;
 
-class program{
-    public static void main(String[] args){
-        calculator a = new calculator();
-        a.run();
-    }
-}
-
-class calculator{
+public class calculator{
     Scanner keyboard = new Scanner(System.in);
-    double memory[]={};
+    double memory[]= new double[100];
     int i = 0;
     void run(){
         String text = keyboard.nextLine();
-        double value = inter.eval(text);
+        double value = evaluate.eval(text);
         System.out.println(value);
         memory[i] = value;
         i++;
+    }
+    void interrupt(){
+        
     }
 }
