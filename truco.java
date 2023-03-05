@@ -1,3 +1,4 @@
+
 import java.util.Random;
 
 class truco{
@@ -12,41 +13,48 @@ class cards{
 }
 
 class player implements card_manager{
-    int len = 3;
-    cards[] cards = new cards[len];
-    public void transfer_cards(card_manager destiny, int quantity, int limit){
-        for(int i=0;i<quantity;i--){destiny.cards[i]=this.cards[i];delete(this.cards,i);}
+    int len;
+    int limit = len;
+    public void transfer_cards(card_manager destiny, int quantity){
+        for(int i=0;i<quantity;i++){destiny.cards[i]=this.cards[i];delete(this.cards,i);this.limit--;}
     }
     public void delete(cards[] cards, int position){
         swap(cards, position);
-        len--;
     }
     public void swap(cards[] cards, int position){
         cards key = cards[len];
         cards[len] = cards[position];
         cards[position] = key; 
+    }
+    public void sort(){
+        int current_number;
+        for(int i =1; i<this.limit; i++){
+            current_number = this.cards[i].value;
+            int j = i-1;
+            while(this.cards[j].value>current_number & j>=0){
+                this.cards[j+1].value = this.cards[j].value;
+                j = j-1;
+        }
+            this.cards[j+1].value = current_number;}}
+    public void ordenate(){
+        cards main_card = this.cards[13];
+        int sequency = (main_card.value/4)*4;
+        for(sequency=sequency;sequency<sequency+4;sequency++){
+            this.cards[sequency].value += 40;
+        }
+        sort();
     }
 }
 
 class Human extends player{
-
+    int len = 3;
+    cards[] cards = new cards[len];
 }
 
-class Monte implements card_manager{
+class Monte extends player{
     int len = 40;
     cards[] cards = new cards[len];
-    public void transfer_cards(card_manager destiny, int quantity, int limit){
-        for(int i=limit;i<quantity;i--){destiny.cards[i]=this.cards[i];delete(this.cards,i);}
-    }
-    public void delete(cards[] cards, int position){
-        swap(cards, position);
-        len--;
-    }
-    public void swap(cards[] cards, int position){
-        cards key = cards[len];
-        cards[len] = cards[position];
-        cards[position] = key; 
-    }
+    int limit = len;
     public void create_deck(){
         String[] card_name = {
         "3P","3C","3E","3O","2P","2C","2E","2O",
@@ -64,41 +72,28 @@ class Monte implements card_manager{
         }      
     }
     public void initialize_round(Human A1, Robot A2, Robot B1, Robot B2, Mesa Mesa){
-        transfer_cards(A1, 3, this.len); this.len-=3;
-        transfer_cards(A2, 3, this.len); this.len-=3;
-        transfer_cards(B1, 3, this.len); this.len-=3;
-        transfer_cards(B2, 3, this.len); this.len-=3;
-        transfer_cards(Mesa, 1, len); len-=3;
-        Mesa.round(A1, A2, B1, B2,len);
+        cards main_card = this.cards[13];
+        for(int i=((main_card.value/4)*4)+4;i<((main_card.value/4)*4)+8;i++){
+            this.cards[i].value += 40;}
+        transfer_cards(A1, 3);
+        transfer_cards(A2, 3);
+        transfer_cards(B1, 3);
+        transfer_cards(B2, 3);
     }
 }
 
-class Mesa implements card_manager{
+class Mesa extends player{
     int len = 13;
     cards[] cards = new cards[len];
-    public void transfer_cards(card_manager destiny, int quantity, int limit){
-        for(int i=0;i<quantity;i--){destiny.cards[i]=this.cards[i];delete(this.cards,i);}
-    }
-    public void delete(cards[] cards, int position){
-        swap(cards, position);
-        len--;
-    }
-    public void swap(cards[] cards, int position){
-        cards key = cards[len];
-        cards[len] = cards[position];
-        cards[position] = key; 
-    }
+    int limit = len;
     public void receive_cards(card_manager donater, int quantity, int counter){
         for(int i=counter;i<quantity;i++){this.cards[i]=donater.cards[i];}
-    }
-    public void round(Human A1, Robot A2, Robot B1, Robot B2, int limit){
-        receive_cards(A1, 3, 1);
-        receive_cards(A2, 3, 4);
-        receive_cards(B1, 3, 7);
-        receive_cards(B2, 3, 10);
     }
 }
 
 class Robot extends player{
-
+    public void play(){
+        sort();
+        
+    }
 }
