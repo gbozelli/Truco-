@@ -4,9 +4,8 @@ import java.util.Scanner;
 
 class truco{
     public static void main(String[] args){
-        cards[] card = new cards[2];
-        card[1].value = 2;
-        System.out.println(card[1].value);
+        Game Game = new Game();
+        System.out.println();
     }
 }
 
@@ -14,6 +13,10 @@ class cards{
     int value;
     String card;
     String signature;
+    cards[] cards;
+    cards(int len){
+        this.cards = new cards[len];
+    }
 }
 
 class player implements card_manager{
@@ -98,7 +101,7 @@ class Human extends player{
 
 class Deck extends player{
     int len = 40;
-    cards[] cards = new cards[len];
+    cards[] cards = new cards(len);
     int limit = len;
     player A1,A2,A3,A4;
     Mesa mesa;
