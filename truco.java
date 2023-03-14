@@ -5,7 +5,6 @@ import java.util.Scanner;
 class truco{
     public static void main(String[] args){
         Game Game = new Game();
-        System.out.println();
     }
 }
 
@@ -14,8 +13,9 @@ class cards{
     String card;
     String signature;
     cards[] cards;
-    cards(int len){
-        this.cards = new cards[len];
+    cards(int value, String card){
+        this.value = value;
+        this.card = card;
     }
 }
 
@@ -52,19 +52,11 @@ class player implements card_manager{
         }
         sort();
     }
-    public void special_card(player p, cards[] card,int i){
-        p.cards[p.limit] = cards[i];
-        p.limit++;
-    }
+    public void special_card(player p, cards[] card,int i){}
     public void clean_deck(){
         this.cards = new cards[len];
     }
-    public void play(Mesa mesa){}
-    @Override
-    public void play() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'play'");
-    }
+    public void play(){};
 }
 
 class Node {
@@ -87,6 +79,11 @@ class Node {
 class Human extends player{
     int len = 3;
     cards[] cards = new cards[len];
+    Human(){
+        for(int i=0;i<len;i++){
+            this.cards[i] = new cards(0,"");
+        }
+    };
     public void play(Mesa mesa){
         for(int i=0;i<this.limit;i++){
             System.out.println(this.cards[i].card);
@@ -97,11 +94,15 @@ class Human extends player{
         int i = keyboard.nextInt();
         special_card(mesa, this.cards, i);
     }
+    public void special_card(player p, cards[] card,int i){
+        p.cards[p.limit] = new cards(card[i].value,cards[i].card);
+        p.limit++;
+    }
 }
 
 class Deck extends player{
     int len = 40;
-    cards[] cards = new cards(len);
+    cards[] cards = new cards[len];
     int limit = len;
     player A1,A2,A3,A4;
     Mesa mesa;
@@ -118,8 +119,7 @@ class Deck extends player{
         "1O","1E","1C","1P","2O","2E","2C","2P",
         "3O","3E","3C","3P",};
         for(int i=0;i<len;i++){
-            this.cards[i].value = i;
-            this.cards[i].card = card_name[i];}
+            this.cards[i] = new cards(i,card_name[i]);}
         Random rand = new Random();
         int r = rand.nextInt(1);
         cards main_card = this.cards[r];
@@ -136,12 +136,21 @@ class Deck extends player{
         transfer_cards(A2, 3);
         transfer_cards(B1, 3);
         transfer_cards(B2, 3);
-        }      
+        }     
+        public void special_card(player p, cards[] card,int i){
+            p.cards[p.limit] = new cards(card[i].value,cards[i].card);
+            p.limit++;
+         }
 }
 
 class Mesa extends player{
     int len = 4;
     cards[] cards = new cards[len];
+    Mesa(){
+        for(int i=0;i<len;i++){
+            this.cards[i] = new cards(0,"");
+        }
+    };
     int limit = 0;
     int points_counter=12;
     cards key_card;
@@ -149,11 +158,23 @@ class Mesa extends player{
         key_card = cards[1];
         clean_deck();
     }
+    public void special_card(player p, cards[] card,int i){
+        p.cards[p.limit] = new cards(card[i].value,cards[i].card);
+        p.limit++;
+    
+}
 }
 
 
 
 class Robot extends player{
+    int len = 3;
+    cards[] cards = new cards[len];
+    Robot(){
+        for(int i=0;i<len;i++){
+            this.cards[i] = new cards(0,"");
+        }
+    };
     public void play(Mesa Mesa){
         sort(); 
         int i;
@@ -170,6 +191,11 @@ class Robot extends player{
         if(control>0){special_card(Mesa, this.cards, 1);}}
         if(this.limit==2){special_card(Mesa, this.cards, 0);}
     }
+    public void special_card(player p, cards[] card,int i){
+        p.cards[p.limit] = new cards(card[i].value,cards[i].card);
+        p.limit++;
+    
+}
 }
 
 class Group{

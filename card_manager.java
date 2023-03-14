@@ -5,5 +5,5 @@ public interface card_manager {
     public void swap(cards[] cards, int position);
     public void sort();
     public void clean_deck();
-    public void play();
+    public void special_card(player p, cards[] card,int i);
 }
